@@ -22,18 +22,11 @@ class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
         )
 
         hbox = Gtk.HBox()
-        categories = CategoriesListView(meta=Categories())
-        #
-        # row = Gtk.ListBoxRow()
-        # vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        # row.add(vbox)
-        # label1 = Gtk.Label("testss", xalign=0)
-        # vbox.pack_start(label1, True, True, 0)
-        #
-        # listbox.add(row)
-        hbox.pack_start(categories, True, True, 0)
+        categories = CategoriesListView(Categories())
+        hbox.pack_start(categories.get_view(), True, True, 0)
+        categories = CategoriesListView(Categories())
+        hbox.pack_start(categories.get_view(), True, True, 0)
         self.add(hbox)
-
 
 
 class TramontaneApp(Gtk.Application):
@@ -49,23 +42,8 @@ class TramontaneApp(Gtk.Application):
         action.connect("activate", self.on_quit)
         self.add_action(action)
 
-    def init_categories(self, listbox):
-        c = Categories()
-        for category in c.items:
-            listbox.add(category.render())
-
     def do_activate(self):
         if not self.window:
-            # using glade to load the ui
-            #builder = Gtk.Builder()
-            #builder.add_from_file('tramontane.glade')
-            #main_window = builder.get_object('applicationwindow1')
-            #main_window.set_application(self)
-
-            # Build list of categories
-            #listbox = builder.get_object('listbox2')
-            #self.init_categories(listbox)
-
             # Main window
             self.window = TramontaneGtkApplicationWindow(application=self)
             self.window.show_all()

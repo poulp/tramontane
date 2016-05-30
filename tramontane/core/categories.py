@@ -1,22 +1,5 @@
 # coding: utf-8
 
-from gi.repository import Gtk
-
-
-class TramontaneObject:
-
-    # class Meta:
-    #     view = None
-    #
-    # def _render(self):
-    #     return self.Meta.view()
-    #
-    # def render(self, *args, **kwargs):
-    #     return self.Meta.view(*args, **kwargs)
-
-    def __init__(self, meta):
-        self.meta = meta
-
 
 class CategoryItem:
 
@@ -24,7 +7,7 @@ class CategoryItem:
         self.label = text
 
     def get_label(self):
-        return 'lol{}'.format(self.label)
+        return self.label
 
 
 class Categories:

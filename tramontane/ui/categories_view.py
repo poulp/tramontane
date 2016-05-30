@@ -6,30 +6,38 @@ from gi.repository import Gtk
 class TCoreView:
 
     class Meta:
-        model = None
+        view = None
 
-    def __init__(self, meta):
-        self.meta = meta
+    def __init__(self, tobject):
+        self.tobject = tobject
+        self.view = self.Meta.view()
+        self.init_view()
+
+    def init_view(self):
+        pass
+
+    def get_view(self):
+        return self.view
 
 
-class CategorieItemView(Gtk.ListBoxRow, TCoreView):
+class CategorieItemView(TCoreView):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    class Meta:
+        view = Gtk.ListBoxRow
 
+    def init_view(self):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        self.add(vbox)
-        label1 = Gtk.Label(self.meta.get_label, xalign=0)
+        self.view.add(vbox)
+        label1 = Gtk.Label(self.tobject.get_label(), xalign=0)
         vbox.pack_start(label1, True, True, 0)
 
 
-class CategoriesListView(Gtk.ListBox, TCoreView):
+class CategoriesListView(TCoreView):
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.init_list()
+    class Meta:
+        view = Gtk.ListBox
 
-    def init_list(self):
-        items = self.meta.items # model items
+    def init_view(self):
+        items = self.tobject.items  # model items
         for item in items:
-            self.add(CategorieItemView(item))
+            self.view.add(CategorieItemView(item).get_view())
