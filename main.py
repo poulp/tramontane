@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from tramontane.ui.app import TramontaneApp
+from tramontane.app import TramontaneApp
 
 if __name__ == "__main__":
     app = TramontaneApp()

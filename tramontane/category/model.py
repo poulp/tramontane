@@ -1,7 +1,7 @@
 # coding: utf-8
 
 
-class CategoryItem:
+class MCategoryItem:
 
     def __init__(self, text):
         self.label = text
@@ -10,7 +10,7 @@ class CategoryItem:
         return self.label
 
 
-class Categories:
+class MCategories:
 
-    def __init__(self):
-        self.items = [CategoryItem("New"), CategoryItem("Starred")]
+    def __init__(self, items):
+        self.items = items

@@ -2,8 +2,9 @@
 
 from gi.repository import Gtk, Gio
 
-from tramontane.core.categories import Categories
-from tramontane.ui.categories_view import CategoriesListView
+from tramontane.category.controller import Controller
+from tramontane.category.model import MCategories, MCategoryItem
+from tramontane.category.view import VCategoriesListView
 
 
 class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
@@ -15,6 +16,10 @@ class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        test_m = MCategories(items=[MCategoryItem("test"), MCategoryItem("salut !!")])
+        test_v = VCategoriesListView()
+        test_c = Controller(model=test_m, view=test_v)
+
         self.set_title(TramontaneGtkApplicationWindow.default_title)
         self.set_default_size(
             TramontaneGtkApplicationWindow.default_width,
@@ -22,10 +27,11 @@ class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
         )
 
         hbox = Gtk.HBox()
-        categories = CategoriesListView(Categories())
-        hbox.pack_start(categories.get_view(), True, True, 0)
-        categories = CategoriesListView(Categories())
-        hbox.pack_start(categories.get_view(), True, True, 0)
+        hbox.pack_start(test_v.widget, True, True, 0)
+        # categories = CategoriesListView(Categories(items=[CategoryItem("New"), CategoryItem("Starred"), Categories(items=[CategoryItem("New"), CategoryItem("Starred")])]))
+        # hbox.pack_start(categories.get_view(), True, True, 0)
+        # categories = CategoriesListView(Categories(items=[]))
+        # hbox.pack_start(categories.get_view(), True, True, 0)
         self.add(hbox)
 
 
