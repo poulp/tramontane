@@ -1,9 +1,13 @@
 # coding: utf-8
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('Gdk', '3.0')
+gi.require_version('GdkPixbuf', '2.0')
 
-from gi.repository import Gtk, Gio
+from gi.repository import Gio, GObject, Gtk
 
 from tramontane.category.controller import Controller
-from tramontane.category.model import MCategories, MCategoryItem
+from tramontane.category.model import MCategories
 from tramontane.category.view import VCategoriesListView
 
 
@@ -16,9 +20,9 @@ class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        test_m = MCategories(items=[MCategoryItem("test"), MCategoryItem("salut !!")])
-        test_v = VCategoriesListView()
-        test_c = Controller(model=test_m, view=test_v)
+        model = MCategories()
+        view = VCategoriesListView()
+        controller = Controller(model=model, view=view)
 
         self.set_title(TramontaneGtkApplicationWindow.default_title)
         self.set_default_size(
@@ -27,7 +31,7 @@ class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
         )
 
         hbox = Gtk.HBox()
-        hbox.pack_start(test_v.widget, True, True, 0)
+        hbox.pack_start(view.widget, True, True, 0)
         # categories = CategoriesListView(Categories(items=[CategoryItem("New"), CategoryItem("Starred"), Categories(items=[CategoryItem("New"), CategoryItem("Starred")])]))
         # hbox.pack_start(categories.get_view(), True, True, 0)
         # categories = CategoriesListView(Categories(items=[]))

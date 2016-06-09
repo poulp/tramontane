@@ -17,16 +17,14 @@ class VCategoriesListView(TCoreView):
     def __init__(self):
         super().__init__()
         self.widget = Gtk.ListBox()
+        self.widget.connect("row-selected", self.on_row_selected)
 
-    def set_list(self, items):
-        for item in items:
-            self.add_item(item.get_label())
+    def on_item_click(self, item):
+        print("lolilol")
 
-    def add_item(self, item_label):
-        vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        self.widget.add(vbox)
-        label1 = Gtk.Label(item_label, xalign=0)
-        vbox.pack_start(label1, True, True, 0)
+    def on_row_selected(self, data, aa):
+        print(data)
+        print(aa)
 
-    def add_list(self, lst):
-        pass
+    def add_list(self, items):
+        print("lol")
