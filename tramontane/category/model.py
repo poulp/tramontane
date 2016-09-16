@@ -15,10 +15,13 @@ class MCategoryItem:
 class MItem(GObject.GObject):
 
     def __init__(self, label):
+
         GObject.GObject.__init__(self)
         self.label = label
+        self.type = type
 
 
 class MCategories(Gio.ListStore):
+
     def get_item_type(self):
         return MItem

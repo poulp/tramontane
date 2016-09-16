@@ -20,8 +20,9 @@ class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        model = MCategories()
-        view = VCategoriesListView()
+        #model = MCategories()
+        model = Gtk.TreeStore(str)
+        view = VCategoriesListView(model)
         controller = Controller(model=model, view=view)
 
         self.set_title(TramontaneGtkApplicationWindow.default_title)
@@ -32,10 +33,17 @@ class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
 
         hbox = Gtk.HBox()
         hbox.pack_start(view.widget, True, True, 0)
-        # categories = CategoriesListView(Categories(items=[CategoryItem("New"), CategoryItem("Starred"), Categories(items=[CategoryItem("New"), CategoryItem("Starred")])]))
-        # hbox.pack_start(categories.get_view(), True, True, 0)
-        # categories = CategoriesListView(Categories(items=[]))
-        # hbox.pack_start(categories.get_view(), True, True, 0)
+        # store = Gtk.TreeStore(str)
+        # store.append(None, ["The Art of Computer Programming"])
+        # lp = store.append(None, ["lol"])
+        # store.append(lp, ["mdr"])
+        # tree = Gtk.TreeView(store)
+        #
+        # renderer = Gtk.CellRendererText()
+        # column = Gtk.TreeViewColumn("Title", renderer, text=0)
+        # tree.append_column(column)
+        # hbox.pack_start(tree, True, True, 0)
+
         self.add(hbox)
 
 

@@ -1,0 +1,23 @@
+{
+  "items": [
+    {
+      "type": "directory",
+      "name": "Root",
+      "items": [
+        {
+          "type": "feed",
+          "name": "Subroot"
+        },
+        {
+          "type": "feed",
+          "name": "Subroot2"
+        }
+      ]
+    },
+    {
+      "type": "feed",
+      "name": "test feed",
+      "url": "http://web.developpez.com/index/rss"
+    }
+  ]
+}
