@@ -1,14 +1,17 @@
 # coding: utf-8
+
+# Import from gi
 import gi
+
+from tramontane.category.model import Cache
+
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 gi.require_version('GdkPixbuf', '2.0')
-
 from gi.repository import Gio, GObject, Gtk
 
-from tramontane.category.controller import Controller
-from tramontane.category.model import MCategories
-from tramontane.category.view import VCategoriesListView
+# Import from tramontante
+from tramontane.category.components import CategoryComp
 
 
 class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
@@ -20,31 +23,26 @@ class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        #model = MCategories()
-        model = Gtk.TreeStore(str)
-        view = VCategoriesListView(model)
-        controller = Controller(model=model, view=view)
-
         self.set_title(TramontaneGtkApplicationWindow.default_title)
         self.set_default_size(
             TramontaneGtkApplicationWindow.default_width,
             TramontaneGtkApplicationWindow.default_height
         )
 
+        # Main box
         hbox = Gtk.HBox()
-        hbox.pack_start(view.widget, True, True, 0)
-        # store = Gtk.TreeStore(str)
-        # store.append(None, ["The Art of Computer Programming"])
-        # lp = store.append(None, ["lol"])
-        # store.append(lp, ["mdr"])
-        # tree = Gtk.TreeView(store)
-        #
-        # renderer = Gtk.CellRendererText()
-        # column = Gtk.TreeViewColumn("Title", renderer, text=0)
-        # tree.append_column(column)
-        # hbox.pack_start(tree, True, True, 0)
+        # Cache
+        self.cache = Cache()
 
+        # Flux component
+        c1 = CategoryComp(self.cache)
+        hbox.pack_start(c1.view.widget, True, True, 0)
+
+        # Add box to main window
         self.add(hbox)
+
+        # Build cache
+        self.cache.init_items()
 
 
 class TramontaneApp(Gtk.Application):
@@ -56,9 +54,19 @@ class TramontaneApp(Gtk.Application):
     def do_startup(self):
         Gtk.Application.do_startup(self)
 
-        action = Gio.SimpleAction.new("quit", None)
-        action.connect("activate", self.on_quit)
-        self.add_action(action)
+        # Quit action
+        action_quit = Gio.SimpleAction.new("quit", None)
+        action_quit.connect("activate", self.on_quit)
+        self.add_action(action_quit)
+
+        # Refresh all action
+        action_refresh_all = Gio.SimpleAction.new("refresh_all", None)
+        action_refresh_all.connect("activate", self.on_refresh_all, self.window)
+        self.add_action(action_refresh_all)
+
+        # Menu
+        builder = Gtk.Builder.new_from_file("tramontane/menu.xml")
+        self.set_app_menu(builder.get_object("app-menu"))
 
     def do_activate(self):
         if not self.window:
@@ -67,5 +75,10 @@ class TramontaneApp(Gtk.Application):
             self.window.show_all()
         self.window.present()
 
-    def on_quit(self):
+    def on_quit(self, action, extra):
         self.quit()
+
+    def on_refresh_all(self, action, param, window):
+        import pdb;pdb.set_trace()
+        window.cache.init_items()
+        print("refresh all")
