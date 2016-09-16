@@ -2,16 +2,14 @@
 
 # Import from gi
 import gi
-
-from tramontane.category.model import Cache
-
 gi.require_version('Gtk', '3.0')
 gi.require_version('Gdk', '3.0')
 gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import Gio, GObject, Gtk
 
-# Import from tramontante
-from tramontane.category.components import CategoryComp
+# Import from tramontane
+from tramontane.category.components import CategoryComp, FeedListComp
+from tramontane.category.model import Cache
 
 
 class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
@@ -31,18 +29,18 @@ class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
 
         # Main box
         hbox = Gtk.HBox()
-        # Cache
-        self.cache = Cache()
+        application = kwargs.get('application')
+        cache = application.cache
 
         # Flux component
-        c1 = CategoryComp(self.cache)
+        c1 = CategoryComp(cache)
         hbox.pack_start(c1.view.widget, True, True, 0)
+
+        c2 = FeedListComp(cache)
+        hbox.pack_start(c2.view.widget, True, True, 0)
 
         # Add box to main window
         self.add(hbox)
-
-        # Build cache
-        self.cache.init_items()
 
 
 class TramontaneApp(Gtk.Application):
@@ -50,6 +48,8 @@ class TramontaneApp(Gtk.Application):
     def __init__(self, **kwargs):
         super().__init__(application_id="github.io.tramontane", **kwargs)
         self.window = None
+        # Cache
+        self.cache = Cache()
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
@@ -61,7 +61,7 @@ class TramontaneApp(Gtk.Application):
 
         # Refresh all action
         action_refresh_all = Gio.SimpleAction.new("refresh_all", None)
-        action_refresh_all.connect("activate", self.on_refresh_all, self.window)
+        action_refresh_all.connect("activate", self.on_refresh_all)
         self.add_action(action_refresh_all)
 
         # Menu
@@ -78,7 +78,5 @@ class TramontaneApp(Gtk.Application):
     def on_quit(self, action, extra):
         self.quit()
 
-    def on_refresh_all(self, action, param, window):
-        import pdb;pdb.set_trace()
-        window.cache.init_items()
-        print("refresh all")
+    def on_refresh_all(self, action, param):
+        self.cache.refresh()

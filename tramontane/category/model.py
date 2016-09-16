@@ -46,7 +46,7 @@ class Cache(GObject.GObject):
         GObject.GObject.__init__(self)
         self.data = {}
 
-    def init_items(self):
+    def refresh(self):
         with open('conf.json') as data_file:
             data = json.load(data_file)
         self.data = data
