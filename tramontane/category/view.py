@@ -31,7 +31,7 @@ class FeedListView:
 
     def __init__(self):
         super().__init__()
-        self.widget = Gtk.ListView()
+        self.widget = Gtk.ListBox()
 
     def get_item_widget(self, item):
         row_box = Gtk.ListBoxRow()

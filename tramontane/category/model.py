@@ -19,7 +19,6 @@ class MItem(GObject.GObject):
 
         GObject.GObject.__init__(self)
         self.label = label
-        self.type = type
 
 
 class MCategories(Gio.ListStore):
