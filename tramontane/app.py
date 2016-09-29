@@ -8,8 +8,8 @@ gi.require_version('GdkPixbuf', '2.0')
 from gi.repository import Gio, GObject, Gtk
 
 # Import from tramontane
-from tramontane.category.components import CategoryComp, FeedListComp
-from tramontane.category.model import Cache
+from tramontane.components import FluxComp, FeedComp
+from tramontane.cache import Cache
 
 
 class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
@@ -33,11 +33,20 @@ class TramontaneGtkApplicationWindow(Gtk.ApplicationWindow):
         cache = application.cache
 
         # Flux component
-        c1 = CategoryComp(cache)
-        hbox.pack_start(c1.view.widget, True, True, 0)
+        flux_component = FluxComp()
+        # Signals
+        cache.connect('cache_changed', flux_component.on_cache_changed)
+        # Add to main view
+        hbox.pack_start(flux_component.view.widget, True, True, 0)
 
-        c2 = FeedListComp(cache)
-        hbox.pack_start(c2.view.widget, True, True, 0)
+        # Feed list component
+        feed_list_component = FeedComp()
+        # Signals
+        cache.connect('cache_changed', feed_list_component.on_cache_changed)
+        flux_component.view.widget.connect('row-activated', feed_list_component.on_category_changed)
+        flux_component.view.widget.get_selection().connect("changed", feed_list_component.on_selection)
+        # Add to main view
+        hbox.pack_start(feed_list_component.view.widget, True, True, 0)
 
         # Add box to main window
         self.add(hbox)
