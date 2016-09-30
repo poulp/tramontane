@@ -1,17 +1,15 @@
 # coding: utf-8
 
-from .model import FeedItem, FeedListStore
-from .view import FeedListView
+from tramontane.lib.component import ListComponent
+from tramontane.components.feed.model import FeedItem, FeedListStore
+from tramontane.components.feed.view import FeedListView
 
 
-class FeedComp:
+class FeedComp(ListComponent):
 
-    def __init__(self):
-        super().__init__()
-        self.view = FeedListView()
-        self.model = FeedListStore()
-        self.view.widget.bind_model(self.model, self.view.get_item_widget)
-        self.focus = None
+    class Meta:
+        view = FeedListView
+        model = FeedListStore
 
     def on_cache_changed(self, cache, arg):
         print(cache.data)

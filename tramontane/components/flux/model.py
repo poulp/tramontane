@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from gi.repository import GObject, Gio, Gtk
+from gi.repository import GObject, Gtk
 
 
 class FluxItem(GObject.GObject):

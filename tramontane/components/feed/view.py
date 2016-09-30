@@ -2,12 +2,10 @@
 
 from gi.repository import Gtk
 
+from tramontane.lib.view import ListView
 
-class FeedListView:
 
-    def __init__(self):
-        super().__init__()
-        self.widget = Gtk.ListBox()
+class FeedListView(ListView):
 
     def get_item_widget(self, item):
         row_box = Gtk.ListBoxRow()

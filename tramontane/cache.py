@@ -1,7 +1,8 @@
 # coding: utf-8
 
-from gi.repository import GObject, Gio, Gtk
 import json
+
+from gi.repository import GObject, Gio, Gtk
 
 class Cache(GObject.GObject):
 

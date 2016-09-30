@@ -1,20 +1,22 @@
 # coding: utf-8
 
-from .model import FluxItem, FluxTreeStore
-from .view import FluxView
+from tramontane.lib.component import ModelComponent
+
+from tramontane.components.flux.model import FluxItem, FluxTreeStore
+from tramontane.components.flux.view import FluxView
 
 
-class FluxComp:
+class FluxComp(ModelComponent):
+
+    class Meta:
+        view = FluxView
 
     def __init__(self):
         super().__init__()
-        self.view = FluxView()
-        self.model = FluxTreeStore(str, FluxItem)
         self.view.widget.set_model(self.model)
 
-    ############
-    # CONFIG
-    ############
+    def get_model(self):
+        return FluxTreeStore(str, FluxItem)
 
     def _build_node(self, treeiter, item):
         items = item.get('items', [])
